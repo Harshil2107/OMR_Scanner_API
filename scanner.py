@@ -30,9 +30,11 @@ if len(countours) > 0:
         if len(approx) == 4:
             page_outline = approx
             break
+sheet = four_point_transform(image, page_outline.reshape(4, 2))
+wrapped = four_point_transform(gray, page_outline.reshape(4, 2))
+otsu_thresh = cv2.threshold(wrapped, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 
-# cv2.drawContours(image, page_outline, -1, (0, 0, 255), 3)
-# cv2.imshow('Example - Show image in window', image)
-#
-# cv2.waitKey(0)  # waits until a key is pressed
-# cv2.destroyAllWindows()
+
+cv2.imshow('Example - Show image in window', otsu_thresh)
+cv2.waitKey(0)  # waits until a key is pressed
+cv2.destroyAllWindows()
