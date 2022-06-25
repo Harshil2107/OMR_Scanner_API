@@ -5,9 +5,9 @@ import argparse
 import imutils
 import cv2
 
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", required=True, help="path to the input image")
-args = vars(ap.parse_args())
+# ap = argparse.ArgumentParser()
+# ap.add_argument("-i", "--image", required=True, help="path to the input image")
+# args = vars(ap.parse_args())
 
 ANSWER_KEY = {0:2, 1:4, 2:0, 3:3, 4:1}
 
@@ -15,7 +15,24 @@ image = cv2.imread('images/omr_test_01.png')
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 blur = cv2.GaussianBlur(gray, (5,5), 0)
 edges = cv2.Canny(blur, 75, 200)
-cv2.imshow('Example - Show image in window', edges)
 
-cv2.waitKey(0)  # waits until a key is pressed
-cv2.destroyAllWindows()
+countours = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+countours = imutils.grab_contours(countours)
+
+page_outline = None
+
+if len(countours) > 0:
+    countours = sorted(countours, key= cv2.contourArea, reverse=True)
+    for i in countours:
+        perimeter = cv2.arcLength(i, True)
+        approx = cv2.approxPolyDP(i, 0.02 * perimeter, True)
+
+        if len(approx) == 4:
+            page_outline = approx
+            break
+
+# cv2.drawContours(image, page_outline, -1, (0, 0, 255), 3)
+# cv2.imshow('Example - Show image in window', image)
+#
+# cv2.waitKey(0)  # waits until a key is pressed
+# cv2.destroyAllWindows()
