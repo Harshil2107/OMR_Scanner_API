@@ -5,7 +5,7 @@ import imutils
 import cv2
 
 ANSWER_KEY = {0:1, 1:4, 2:0, 3:2, 4:1}
-
+"B E A C B"
 
 def grade_omr(url):
     image = cv2.imread(url)
@@ -63,8 +63,9 @@ def grade_omr(url):
             res += 1
     return res
 
-for i in range(0,5):
-    res = grade_omr('images/omr_test_01.png')
+for i in range(1,6):
+
+    res = grade_omr('images/omr_test_0'+str(i)+'.png')
     print(res)
 
 
