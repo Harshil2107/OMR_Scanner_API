@@ -1,6 +1,6 @@
 from call_post_methods import *
 
-# setting up answer key {question: correct option} correct option is 0 for A, 1 for B and so on
+# setting up answer key {question: correct option, ...} correct option is 0 for A, 1 for B and so on
 ans = {1: 1, 2: 4, 3: 0, 4: 2, 5: 1}
 print(ans)
 set_anskey_numoption(ans, 5)
