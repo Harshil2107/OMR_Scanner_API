@@ -4,11 +4,14 @@ import numpy as np
 import imutils
 import cv2
 
-ANSWER_KEY = {0:1, 1:4, 2:0, 3:2, 4:1}
+ANSWER_KEY = None
 "B E A C B"
-
-def grade_omr(url):
-    image = cv2.imread(url)
+def set_anskey(key):
+    global ANSWER_KEY
+    ANSWER_KEY = key
+    print(ANSWER_KEY)
+def grade_omr(image):
+    # image = cv2.imread(url)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
     edges = cv2.Canny(blur, 75, 200)
@@ -63,10 +66,8 @@ def grade_omr(url):
             res += 1
     return res
 
-for i in range(1,6):
 
-    res = grade_omr('images/omr_test_0'+str(i)+'.png')
-    print(res)
+
 
 
 
