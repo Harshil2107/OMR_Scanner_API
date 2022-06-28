@@ -1,8 +1,8 @@
-from flask import Flask, request, Response
-from scanner import *
-import jsonpickle
-import numpy as np
 import cv2
+import numpy as np
+from flask import Flask, request, Response
+
+from scanner import *
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -17,22 +17,18 @@ def gradeomr():
     # decode image
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     res = grade_omr(img)
-    response = {'correct': res}
-    # encode response using jsonpickle
-    response_pickled = jsonpickle.encode(response)
 
-    return Response(response=response_pickled, status=200, mimetype="application/json")
+    return {'correct': res}
 
 
 @app.route('/api/setkey', methods=['POST'])
 def setkey():
     r = request.get_json()
     key = {}
-    k=0
+    k = 0
     for i in r:
         key[k] = r[i]
-        k+=1
-    print(key)
+        k += 1
     set_anskey(key)
     return {'key': r}
 

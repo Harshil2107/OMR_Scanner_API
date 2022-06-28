@@ -1,15 +1,18 @@
-from imutils.perspective import four_point_transform
-from imutils import contours
-import numpy as np
-import imutils
 import cv2
+import imutils
+import numpy as np
+from imutils import contours
+from imutils.perspective import four_point_transform
 
 ANSWER_KEY = None
-"B E A C B"
+
+
 def set_anskey(key):
     global ANSWER_KEY
     ANSWER_KEY = key
     print(ANSWER_KEY)
+
+
 def grade_omr(image):
     # image = cv2.imread(url)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -65,10 +68,3 @@ def grade_omr(image):
         if k == marked[1]:
             res += 1
     return res
-
-
-
-
-
-
-
