@@ -6,18 +6,18 @@ import cv2
 import requests
 
 
-def set_anskey(ans):
+def set_anskey_numoption(ans, options):
     addr = 'http://localhost:5000'
     test_url = addr + '/api/setkey'
-
+    data = [ans, options]
     content_type = "application/json"
     headers = {'content-type': content_type}
-    response = requests.post(test_url, json=ans, headers=headers)
+    response = requests.post(test_url, json=data, headers=headers)
 
 
 def grade_img(url):
     addr = 'http://localhost:5000'
-    test_url = addr + '/api/gradeomr'
+    test_url = addr + '/api/grade_omr'
 
     # prepare headers for http request
     content_type = 'image/jpeg'
@@ -30,4 +30,4 @@ def grade_img(url):
     response = requests.post(test_url, data=img_encoded.tobytes(), headers=headers)
     # decode response
     ans = json.loads(response.text)
-    return ans['correct']
+    return ans['return val']
