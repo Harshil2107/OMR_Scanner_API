@@ -1,3 +1,4 @@
+import numpy as np
 from flask import Flask, request
 
 from scanner import *
@@ -7,6 +8,12 @@ app = Flask(__name__)
 
 
 # route http posts to this method
+@app.route("/")
+def showHomePage():
+    # response from the server
+    return "This is home page"
+
+
 @app.route('/api/grade_omr', methods=['POST'])
 def gradeomr():
     key = getkey()
@@ -14,8 +21,9 @@ def gradeomr():
     if key is None or opt is None:
         return {'return val': -1}
     r = request
+    # print(r.data)
     # convert string of image data to uint8
-    uint8img = np.fromstring(r.data, np.uint8)
+    uint8img = np.frombuffer(r.data, np.uint8)
     # decode image
     img = cv2.imdecode(uint8img, cv2.IMREAD_COLOR)
     # grading the omr
@@ -28,6 +36,7 @@ def gradeomr():
 def setkey():
     # getting data
     r = request.get_json()
+    print(r)
     # number of options in the questions
     num_options = r[1]
     # answer key
@@ -43,7 +52,15 @@ def setkey():
     return {'key': ans}
 
 
+@app.route("/api/debug", methods=["POST"])
+def debug():
+    text = request.form["sample"]
+    print(text)
+    return "received"
+
+
 # start flask app
 if __name__ == '__main__':
-    # app.debug = True
-    app.run(host='127.0.0.1', port=5000)
+    app.debug = True
+    app.run(host="0.0.0.0", port=5000)
+
